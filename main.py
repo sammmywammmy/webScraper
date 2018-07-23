@@ -1,33 +1,37 @@
 import requests
 from bs4 import BeautifulSoup
 
-def trade_spider(max_pages):
+
+def links(max_pages):
     page = 1
     while page <= max_pages:
-        url = "https://quizlet.com/5046711/test" + str(page)
-        source_code = requests.get(url, allow_redirects = False) #just grabbing hmtl code
-        plain_text = source_code.text.encode("ascii","replace")
-        soup = BeautifulSoup(plain_text, "html.parser")
-        for question in soup.findAll("a", {"class": "user-name"}):
-            href = link.get("href")
-            question = link.string
-        for answer in soup.findAll("a", {"class": ""})
+        url = 'https://losangeles.craigslist.org/search/laf?hasPic=1' + str(page)
+        source_code = requests.get(url, allow_redirects=False)
+        # just get the code, no headers or anything
+        plain_text = source_code.text.encode('ascii', 'replace')
+        # BeautifulSoup objects can be sorted through easy
+        soup = BeautifulSoup(plain_text,'html.parser')
+        for link in soup.findAll('a', {'class': 'result-title hdrlnk'}):
+            href = link.get('href')
+            title = link.string  # just the text, not the HTML
             print(href)
-            print(question)
-        #page += 1
+            print(title)
+            #get_single_item_data(href)
+        page += 1
+
 
 def get_single_item_data(item_url):
     source_code = requests.get(item_url)
     plain_text = source_code.text
     soup = BeautifulSoup(plain_text,"lxml")
     # if you want to gather photos from that user
-    for quizAnswers in soup.findAll('span', {'class': 'TermText notranslate lang-en'}): # all photos of the user
-        quizAnswers='https://thenewboston.com'+item_name.get('src')
-        print(quizAnswers)
+    for item_name in soup.findAll('img', {'class': 'thumb'}): # all photos of the user
+        photo='https://losangeles.craigslist.org/search/laf?hasPic=1'+item_name.get('src')
+        print(photo)
     # if you want to gather links for a web crawler
-  """"  for questions in soup.findAll(''):
+    for link in soup.findAll('a'):
         href = link.get('href')
-        print(questions)""""
+        print(href)
 
 
-trade_spider(1)
+links(1)
