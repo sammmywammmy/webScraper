@@ -34,4 +34,4 @@ def get_single_item_data(item_url):
         print(href)
 
 
-links(1)
+links(3)
